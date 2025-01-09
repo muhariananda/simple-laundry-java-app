@@ -4,12 +4,18 @@
  */
 package id.muhariananda.simplelaundry;
 
+import id.muhariananda.simplelaundry.controller.OrderController;
 import id.muhariananda.simplelaundry.controller.ServiceController;
+import id.muhariananda.simplelaundry.repository.OrderRepository;
+import id.muhariananda.simplelaundry.repository.OrderRepositoryImpl;
 import id.muhariananda.simplelaundry.repository.ServiceRepository;
 import id.muhariananda.simplelaundry.repository.ServiceRepositoryImpl;
+import id.muhariananda.simplelaundry.service.OrderService;
+import id.muhariananda.simplelaundry.service.OrderServiceImpl;
 import id.muhariananda.simplelaundry.service.ServiceService;
 import id.muhariananda.simplelaundry.service.ServiceServiceImpl;
 import id.muhariananda.simplelaundry.utils.DatabaseUtil;
+import id.muhariananda.simplelaundry.view.OrderPanelView;
 import id.muhariananda.simplelaundry.view.ServicePanelView;
 import javax.sql.DataSource;
 
@@ -22,11 +28,13 @@ public class HomeLaundryFrame extends javax.swing.JFrame {
     /**
      * Creates new form HomeLaundryFrame
      *
+     * @param orderPanel
      * @param servicePanel
      */
-    public HomeLaundryFrame(ServicePanelView servicePanel) {
+    public HomeLaundryFrame(OrderPanelView orderPanel, ServicePanelView servicePanel) {
         initComponents();
 
+        menuTab.addTab(null, orderPanel);
         menuTab.addTab(null, servicePanel);
     }
 
@@ -61,6 +69,11 @@ public class HomeLaundryFrame extends javax.swing.JFrame {
         jLabel1.setToolTipText("");
 
         orderMenuButton.setText("Pesanan");
+        orderMenuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                orderMenuButtonActionPerformed(evt);
+            }
+        });
 
         serviceMenuButton.setText("Layanan");
         serviceMenuButton.addActionListener(new java.awt.event.ActionListener() {
@@ -118,12 +131,16 @@ public class HomeLaundryFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void serviceMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serviceMenuButtonActionPerformed
-        menuTab.setSelectedIndex(0);
+        menuTab.setSelectedIndex(1);
     }//GEN-LAST:event_serviceMenuButtonActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         setLocationRelativeTo(null);
     }//GEN-LAST:event_formWindowActivated
+
+    private void orderMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderMenuButtonActionPerformed
+        menuTab.setSelectedIndex(0);
+    }//GEN-LAST:event_orderMenuButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -152,16 +169,21 @@ public class HomeLaundryFrame extends javax.swing.JFrame {
         }
         //</editor-fold>
 
-        DataSource dataSource = DatabaseUtil.getDataSource();
-        ServiceRepository serviceRepository = new ServiceRepositoryImpl(dataSource);
-        ServiceService service = new ServiceServiceImpl(serviceRepository);
+        ServiceService service = DepedencyInjector.getInstance(ServiceService.class);
+        OrderService orderService = DepedencyInjector.getInstance(OrderService.class);
 
         ServicePanelView servicePanel = new ServicePanelView();
+        OrderPanelView orderPanel = new OrderPanelView();
+
+        new OrderController(orderPanel, orderService);
         new ServiceController(servicePanel, service);
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            HomeLaundryFrame frame = new HomeLaundryFrame(servicePanel);
+            HomeLaundryFrame frame = new HomeLaundryFrame(
+                    orderPanel, servicePanel
+            );
+
             frame.pack();
             frame.setVisible(true);
         });
