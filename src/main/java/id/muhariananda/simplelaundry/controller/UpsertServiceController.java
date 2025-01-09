@@ -7,6 +7,7 @@ package id.muhariananda.simplelaundry.controller;
 import id.muhariananda.simplelaundry.entity.Service;
 import id.muhariananda.simplelaundry.service.ServiceService;
 import id.muhariananda.simplelaundry.view.UpsertServiceFrameView;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -21,34 +22,39 @@ public class UpsertServiceController {
         this.view = view;
         this.serviceHandler = serviceHandler;
 
-        loadService();
-        setUpView();
+        showServices();
+        setupView();
     }
 
-    private void setUpView() {
+    private void setupView() {
         view.getSaveButton().addActionListener((e) -> {
-            String id = view.getIdTextField().getText();
-            String name = view.getNameTextField().getText();
-            String price = view.getPriceTextField().getText();
+            try {
+                String id = view.getIdTextField().getText();
+                String name = view.getNameTextField().getText();
+                String price = view.getPriceTextField().getText();
 
-            boolean isNotValid = name.trim().isEmpty() && price.trim().isEmpty();
+                boolean isNotValid = name.trim().isEmpty() && price.trim().isEmpty();
 
-            if (isNotValid) {
-                return;
+                if (isNotValid) {
+                    throw new IllegalArgumentException("Terdapat kolom kosong");
+                }
+
+                if (id.isEmpty()) {
+                    serviceHandler.addService(name, Double.parseDouble(price));
+                } else {
+                    serviceHandler.updateService(Integer.parseInt(id), name, Double.parseDouble(price));
+                }
+
+                view.getRefreshCallback().run();
+                view.dispose();
+                
+            } catch (IllegalArgumentException ex) {
+                JOptionPane.showMessageDialog(view, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-
-            if (id.isEmpty()) {
-                serviceHandler.addService(name, Double.parseDouble(price));
-            } else {
-                serviceHandler.updateService(Integer.parseInt(id), name, Double.parseDouble(price));
-            }
-            
-            view.getRefreshCallback().run();
-            view.dispose();
         });
     }
 
-    private void loadService() {
+    private void showServices() {
         String id = view.getIdTextField().getText();
 
         if (id == null || id.isEmpty()) {

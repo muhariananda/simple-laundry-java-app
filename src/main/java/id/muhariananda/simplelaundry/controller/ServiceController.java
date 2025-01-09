@@ -27,10 +27,10 @@ public class ServiceController {
         this.serviceHandler = serviceHandler;
 
         loadServices(null);
-        setUpView();
+        setupView();
     }
 
-    private void setUpView() {
+    private void setupView() {
 
         view.getRefreshButton().addActionListener(e -> {
             loadServices(null);
