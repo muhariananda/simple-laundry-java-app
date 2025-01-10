@@ -73,6 +73,38 @@ Aplikasi sistem manajemen laundry sederhana yang digunakan untuk mengelola pesan
 - **orders.customer_id** merujuk ke **customers.id** (Many-to-One)
 - **orders.service_id** merujuk ke **services.id** (Many-to-One)
 
+## Arsitektur Aplikasi
+
+Aplikasi ini mengadopsi arsitektur **Model-View-Controller (MVC)** untuk memisahkan tanggung jawab antara komponen-komponen aplikasi, mempermudah pengelolaan kode dan pengembangan lebih lanjut. Berikut adalah komponen-komponen utama yang digunakan:
+
+### 1. **Entity**
+   - **Entity** merupakan representasi dari data yang ada di dalam database. Setiap entity menggambarkan tabel dalam database, seperti `Customer`, `Service`, dan `Order`. Entity ini memiliki atribut yang berkorespondensi dengan kolom tabel dalam database.
+   
+   Contoh: 
+   - **Order.java**: Menyimpan data terkait pesanan (id, customer_id, service_id, weight, total_price, status, created_at, updated_at).
+
+### 2. **Repository**
+   - **Repository** bertanggung jawab untuk berinteraksi dengan database. Repository ini menyediakan operasi CRUD (Create, Read, Update, Delete) untuk entity yang ada.
+   
+   Contoh:
+   - **OrderRepository.java**: Berisi metode untuk mengambil data pesanan berdasarkan ID, menambah pesanan baru, memperbarui status pesanan, dan menghitung total pendapatan.
+
+### 3. **Service**
+   - **Service** adalah lapisan yang menangani logika bisnis aplikasi. Service bertugas untuk mengelola aturan bisnis dan operasi yang lebih kompleks. Service menggunakan **Repository** untuk mengambil data dan melakukan perhitungan atau manipulasi data.
+
+### 3. **Controller**
+   - **Controller** mengatur alur logika aplikasi dan menghubungkan model (Entity) dengan tampilan (View). Controller menerima input dari pengguna, memanggil operasi yang sesuai di repository, dan mengarahkan alur aplikasi.
+   
+   Contoh:
+   - **OrderController.java**: Menangani input pengguna untuk membuat pesanan baru, memperbarui status pesanan, dan menampilkan daftar pesanan.
+
+### 4. **View**
+   - **View** bertanggung jawab untuk menampilkan antarmuka pengguna. Di dalam aplikasi ini, tampilan menggunakan Java Swing untuk menampilkan form, daftar pesanan, dan laporan.
+   
+   Contoh:
+   - **OrderPanelView.java**: Panel yang menampilkan daftar pesanan yang ada dan form untuk menambah atau mengubah status pesanan.
+   - **IncomePanelView.java**: Panel yang menampilkan laporan pendapatan berdasarkan rentang tanggal.
+
 ## Screenshot
 
 | Halaman            | Screenshot                                            |
