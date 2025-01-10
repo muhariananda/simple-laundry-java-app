@@ -119,9 +119,9 @@ public class UpsertOrderController {
     private void setupCustomerComboBox() {
         List<Customer> customers = customerService.searchCustomer("");
 
-        view.getCustomerComboBox().removeAllItems();        
+        view.getCustomerComboBox().removeAllItems();
         view.getCustomerComboBox().addItem("");
-        
+
         for (Customer customer : customers) {
             view.getCustomerComboBox().addItem(customer.getName());
         }
@@ -176,8 +176,12 @@ public class UpsertOrderController {
         Order order = orderService.getOrder(view.getId());
 
         if (order != null) {
-            customer = customerService.getCustomer(order.getId());
+            customer = customerService.getCustomer(order.getMemberId());
             selectedService = serviceService.getService(order.getServiceId());
+            
+            System.out.println(order);
+            System.out.println(customer);
+            System.out.println(selectedService);
         }
 
         if (order != null && customer != null) {
