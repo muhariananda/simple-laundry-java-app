@@ -4,14 +4,8 @@
  */
 package id.muhariananda.simplelaundry;
 
-import id.muhariananda.simplelaundry.controller.IncomeController;
-import id.muhariananda.simplelaundry.controller.OrderController;
-import id.muhariananda.simplelaundry.controller.ServiceController;
-import id.muhariananda.simplelaundry.service.OrderService;
-import id.muhariananda.simplelaundry.service.ServiceService;
-import id.muhariananda.simplelaundry.view.IncomePanelView;
-import id.muhariananda.simplelaundry.view.OrderPanelView;
-import id.muhariananda.simplelaundry.view.ServicePanelView;
+import java.util.List;
+import javax.swing.JPanel;
 
 /**
  *
@@ -22,16 +16,14 @@ public class HomeLaundryFrame extends javax.swing.JFrame {
     /**
      * Creates new form HomeLaundryFrame
      *
-     * @param orderPanel
-     * @param servicePanel
+     * @param panels
      */
-    public HomeLaundryFrame(OrderPanelView orderPanel, ServicePanelView servicePanel, IncomePanelView incomePanel) {
+    public HomeLaundryFrame(List<JPanel> panels) {
         initComponents();
 
-        menuTab.addTab(null, orderPanel);
-        menuTab.addTab(null, servicePanel);
-
-        menuTab.addTab(null, incomePanel);
+        for (JPanel panel : panels) {
+            menuTab.addTab(null, panel);
+        }
     }
 
     /**
@@ -132,10 +124,6 @@ public class HomeLaundryFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void serviceMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serviceMenuButtonActionPerformed
-        menuTab.setSelectedIndex(1);
-    }//GEN-LAST:event_serviceMenuButtonActionPerformed
-
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         setLocationRelativeTo(null);
     }//GEN-LAST:event_formWindowActivated
@@ -144,58 +132,14 @@ public class HomeLaundryFrame extends javax.swing.JFrame {
         menuTab.setSelectedIndex(0);
     }//GEN-LAST:event_orderMenuButtonActionPerformed
 
+    private void serviceMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serviceMenuButtonActionPerformed
+        menuTab.setSelectedIndex(1);
+    }//GEN-LAST:event_serviceMenuButtonActionPerformed
+
     private void reportMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportMenuButtonActionPerformed
         menuTab.setSelectedIndex(2);
     }//GEN-LAST:event_reportMenuButtonActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(HomeLaundryFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(HomeLaundryFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(HomeLaundryFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(HomeLaundryFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        ServiceService service = DepedencyInjector.getInstance(ServiceService.class);
-        OrderService orderService = DepedencyInjector.getInstance(OrderService.class);
-
-        ServicePanelView servicePanel = new ServicePanelView();
-        OrderPanelView orderPanel = new OrderPanelView();
-        IncomePanelView incomePanel = new IncomePanelView();
-
-        new OrderController(orderPanel, orderService);
-        new ServiceController(servicePanel, service);
-        new IncomeController(incomePanel, orderService);
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            HomeLaundryFrame frame = new HomeLaundryFrame(
-                    orderPanel, servicePanel, incomePanel
-            );
-
-            frame.pack();
-            frame.setVisible(true);
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
