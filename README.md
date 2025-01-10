@@ -92,13 +92,13 @@ Aplikasi ini mengadopsi arsitektur **Model-View-Controller (MVC)** untuk memisah
 ### 3. **Service**
    - **Service** adalah lapisan yang menangani logika bisnis aplikasi. Service bertugas untuk mengelola aturan bisnis dan operasi yang lebih kompleks. Service menggunakan **Repository** untuk mengambil data dan melakukan perhitungan atau manipulasi data.
 
-### 3. **Controller**
+### 4. **Controller**
    - **Controller** mengatur alur logika aplikasi dan menghubungkan model (Entity) dengan tampilan (View). Controller menerima input dari pengguna, memanggil operasi yang sesuai di repository, dan mengarahkan alur aplikasi.
    
    Contoh:
    - **OrderController.java**: Menangani input pengguna untuk membuat pesanan baru, memperbarui status pesanan, dan menampilkan daftar pesanan.
 
-### 4. **View**
+### 5. **View**
    - **View** bertanggung jawab untuk menampilkan antarmuka pengguna. Di dalam aplikasi ini, tampilan menggunakan Java Swing untuk menampilkan form, daftar pesanan, dan laporan.
    
    Contoh:
