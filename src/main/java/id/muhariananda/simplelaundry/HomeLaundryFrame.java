@@ -4,20 +4,14 @@
  */
 package id.muhariananda.simplelaundry;
 
+import id.muhariananda.simplelaundry.controller.IncomeController;
 import id.muhariananda.simplelaundry.controller.OrderController;
 import id.muhariananda.simplelaundry.controller.ServiceController;
-import id.muhariananda.simplelaundry.repository.OrderRepository;
-import id.muhariananda.simplelaundry.repository.OrderRepositoryImpl;
-import id.muhariananda.simplelaundry.repository.ServiceRepository;
-import id.muhariananda.simplelaundry.repository.ServiceRepositoryImpl;
 import id.muhariananda.simplelaundry.service.OrderService;
-import id.muhariananda.simplelaundry.service.OrderServiceImpl;
 import id.muhariananda.simplelaundry.service.ServiceService;
-import id.muhariananda.simplelaundry.service.ServiceServiceImpl;
-import id.muhariananda.simplelaundry.utils.DatabaseUtil;
+import id.muhariananda.simplelaundry.view.IncomePanelView;
 import id.muhariananda.simplelaundry.view.OrderPanelView;
 import id.muhariananda.simplelaundry.view.ServicePanelView;
-import javax.sql.DataSource;
 
 /**
  *
@@ -31,11 +25,13 @@ public class HomeLaundryFrame extends javax.swing.JFrame {
      * @param orderPanel
      * @param servicePanel
      */
-    public HomeLaundryFrame(OrderPanelView orderPanel, ServicePanelView servicePanel) {
+    public HomeLaundryFrame(OrderPanelView orderPanel, ServicePanelView servicePanel, IncomePanelView incomePanel) {
         initComponents();
 
         menuTab.addTab(null, orderPanel);
         menuTab.addTab(null, servicePanel);
+
+        menuTab.addTab(null, incomePanel);
     }
 
     /**
@@ -83,6 +79,11 @@ public class HomeLaundryFrame extends javax.swing.JFrame {
         });
 
         reportMenuButton.setText("Laporan");
+        reportMenuButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reportMenuButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -142,6 +143,10 @@ public class HomeLaundryFrame extends javax.swing.JFrame {
         menuTab.setSelectedIndex(0);
     }//GEN-LAST:event_orderMenuButtonActionPerformed
 
+    private void reportMenuButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportMenuButtonActionPerformed
+        menuTab.setSelectedIndex(2);
+    }//GEN-LAST:event_reportMenuButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -174,14 +179,16 @@ public class HomeLaundryFrame extends javax.swing.JFrame {
 
         ServicePanelView servicePanel = new ServicePanelView();
         OrderPanelView orderPanel = new OrderPanelView();
+        IncomePanelView incomePanel = new IncomePanelView();
 
         new OrderController(orderPanel, orderService);
         new ServiceController(servicePanel, service);
+        new IncomeController(incomePanel, orderService);
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
             HomeLaundryFrame frame = new HomeLaundryFrame(
-                    orderPanel, servicePanel
+                    orderPanel, servicePanel, incomePanel
             );
 
             frame.pack();
