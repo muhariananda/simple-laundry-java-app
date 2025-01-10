@@ -144,10 +144,9 @@ public class OrderController {
             String totalPrice = "Rp. " + String.valueOf(order.getPrice());
             String orderStatus = order.getStatus();
             String createdAt = DateUtil.timestampToDateString(order.getCreatedAt());
-            String updatedAt = DateUtil.timestampToDateString(order.getDoneAt());
 
             model.addRow(new Object[]{
-                orderId, customerName, serviceName, weight, totalPrice, orderStatus, createdAt, updatedAt
+                orderId, customerName, serviceName, weight, totalPrice, orderStatus, createdAt
             });
         }
     }
